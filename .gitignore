@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+venv/
+.venv/
+AtlasRAG/venv/
+.vscode/
+.DS_Store
+chromadb/
+logs/
