@@ -15,7 +15,7 @@ def main():
             print("👋 Goodbye!")
             break
             
-        # 2. Retrieve (Dhoondo)
+        # 2. Retrieve (find it)
         print(f"\n🔍 Searching knowledge base for: '{query}'...")
         retrieved_docs = retriever.search(query)
         
@@ -23,7 +23,7 @@ def main():
             print("❌ No relevant documents found.")
             continue
             
-        # 3. Generate (Socho aur Likho)
+        # 3. Generate (think and write it)
         print(f"📄 Found {len(retrieved_docs)} relevant contexts. Sending to LLM...")
         answer = generator.generate_answer(query, retrieved_docs)
         

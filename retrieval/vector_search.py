@@ -1,23 +1,47 @@
 import os
+import streamlit as st
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from dotenv import load_dotenv
 
+# Load Environment Variables
 load_dotenv()
 
+# FIX: Class ka naam wapas 'VectorSearcher' kar diya (taaki error na aaye)
 class VectorSearcher:
-    # UPDATE: Folder name changed to './chromadb'
-    def __init__(self, persist_dir="./chromadb"):
-        api_key = os.getenv("GOOGLE_API_KEY")
-        self.embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004", google_api_key=api_key)
-        
-        # Load existing DB
-        self.vector_store = Chroma(
-            persist_directory=persist_dir,
-            embedding_function=self.embeddings
+    def __init__(self):
+        self.api_key = os.getenv("GOOGLE_API_KEY")
+        if not self.api_key:
+            st.error("❌ Google API Key not found! Check .env file.")
+            return
+
+        # 1. Embedding Model (Must match Ingestion!)
+        self.embeddings = GoogleGenerativeAIEmbeddings(
+            model="models/gemini-embedding-001", 
+            google_api_key=self.api_key
         )
 
-    def search(self, query, k=5):
-        print(f"🔍 Vector Searching for: '{query}'")
-        docs = self.vector_store.similarity_search_with_score(query, k=k)
-        return docs
+        # 2. Connect to Database (Address batana zaroori hai!)
+        if os.path.exists("./chroma_db"):
+            self.vector_store = Chroma(
+                persist_directory="./chroma_db",  
+                embedding_function=self.embeddings
+            )
+        else:
+            st.error("❌ Error: 'chroma_db' folder nahi mila! Please run 'python run_ingestion.py' first.")
+            self.vector_store = None
+
+    def search(self, query, k=3):
+        """
+        Semantic Search using Vector Database
+        """
+        if not self.vector_store:
+            return []
+            
+        try:
+            # Similarity Search
+            results = self.vector_store.similarity_search(query, k=k)
+            return results
+        except Exception as e:
+            st.error(f"❌ Search Error: {e}")
+            return []

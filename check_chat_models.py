@@ -9,14 +9,11 @@ if not api_key:
     print("❌ Error: API Key not found!")
 else:
     genai.configure(api_key=api_key)
-    print("📋 Checking available Embedding models for your API Key...")
-    found = False
+    print("📋 Checking available CHAT models...")
     try:
         for m in genai.list_models():
-            if 'embedContent' in m.supported_generation_methods:
+            # find models for 'generateContent' method (chat models)
+            if 'generateContent' in m.supported_generation_methods:
                 print(f"✅ Found: {m.name}")
-                found = True
-        if not found:
-            print("❌ No embedding models found. Check your API Key permissions.")
     except Exception as e:
         print(f"❌ Error listing models: {e}")

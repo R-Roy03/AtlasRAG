@@ -1,14 +1,9 @@
 # 🌍 AtlasRAG Platform
 ### Enterprise-Grade Evaluation & Inference Engine
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
-[![Streamlit](https://img.shields.io/badge/Frontend-Streamlit-red)](https://streamlit.io/)
-[![LangChain](https://img.shields.io/badge/Orchestration-LangChain-green)](https://www.langchain.com/)
-[![Gemini](https://img.shields.io/badge/AI-Gemini%202.0-purple)](https://deepmind.google/technologies/gemini/)
+**AtlasRAG** is not just a chatbot; it is a self-correcting **Knowledge Intelligence System** designed to solve the biggest problem in enterprise GenAI: **Reliability**.
 
-**AtlasRAG** is not just a chatbot; it is a self-correcting **Knowledge Intelligence System** designed to solve the biggest problem in enterprise GenAI: **Reliability.**
-
-Unlike standard RAG implementations, AtlasRAG includes an internal **"Evaluation Engine" (LLM-as-a-Judge)** that audits every generated response for hallucinations (Faithfulness) and utility (Relevance) in real-time.
+Unlike standard RAG implementations, AtlasRAG includes an internal **"Evaluation Engine" (LLM-as-a-Judge)** that audits every generated response for hallucinations (**Faithfulness**) and utility (**Relevance**) in real-time.
 
 ---
 
@@ -20,16 +15,18 @@ Every response is mathematically scored before being presented to the user.
 - **Relevance Score:** Verifies if the answer actually addresses the user's query.
 
 ### 🔍 Hybrid Search Engine
-Combines the best of both retrieval worlds:
+Combines the best of both retrieval worlds for maximum accuracy:
 - **Vector Search (ChromaDB):** For semantic understanding and conceptual matching.
 - **Keyword Search (Rank-BM25):** For exact matching of domain-specific jargon and technical terms.
 
-### 📊 Observability & Audit Trails
-Treats AI as a production component, not a black box.
-- Logs every interaction, latency, token usage, and quality score to `logs/query_logs.csv` for analytics.
+### 🧠 Dynamic Knowledge Base
+- **User-Controlled Chunking:** Adjust chunk sizes (500-2000 tokens) via the UI to optimize for precision or context.
+- **Live Ingestion:** Upload PDF documents directly through the sidebar. The system automatically handles chunking, embedding, and indexing in real-time.
+- **Persistent Storage:** Knowledge is stored locally in `chroma_db`, ensuring data persists even after restarts.
 
-### 🔒 Local-First Privacy
-- Documents are processed and stored locally using **ChromaDB**. Your private data never leaves the ingestion pipeline.
+### 💾 Smart Chat Management
+- **Chat History:** Automatically saves your conversation context.
+- **Export & Clear:** Download your full chat history as JSON or clear it with a single click to start fresh.
 
 ---
 
@@ -37,12 +34,12 @@ Treats AI as a production component, not a black box.
 
 | Component | Technology | Reasoning |
 | :--- | :--- | :--- |
-| **LLM (Inference)** | **Gemini 2.0 Flash Lite** | Low-latency reasoning with high context window. |
-| **LLM (Judge)** | **Gemini 1.5 Flash** | Independent audit model for unbiased scoring. |
+| **LLM (Inference)** | **Gemini 2.5 Flash** | Latest high-speed model for reasoning & generation. |
+| **LLM (Judge)** | **Gemini 2.5 Flash** | Same high-tier model used for unbiased self-evaluation. |
 | **Orchestration** | **LangChain** | Robust chain-of-thought workflows. |
 | **Vector Store** | **ChromaDB** | Local, privacy-focused vector database. |
 | **Search Algo** | **BM25 + Vector** | Hybrid retrieval for maximum recall. |
-| **Frontend** | **Streamlit** | Interactive UI with real-time metric dashboards. |
+| **Frontend** | **Streamlit** | Interactive UI with real-time metric dashboards & controls. |
 
 ---
 
@@ -52,5 +49,47 @@ Follow these steps to run AtlasRAG locally:
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/R-Roy03/AtlasRAG-Enterprise-Architecture.git](https://github.com/R-Roy03/AtlasRAG-Enterprise-Architecture.git)
+git clone https://github.com/R-Roy03/AtlasRAG.git
 cd AtlasRAG
+
+```
+
+### 2. Create Virtual Environment
+```bash
+python -m venv venv
+
+# Windows:
+venv\Scripts\activate
+
+# Mac/Linux:
+source venv/bin/activate
+
+```
+
+### 3. Install Dependencies (Version Locked)
+```bash
+pip install -r requirements.txt
+
+```
+
+### 4. Set Up API Key
+1. Create a `.env` file in the root folder.
+2. Add your Google API key:
+```env
+GOOGLE_API_KEY="your_actual_api_key_here"
+
+```
+
+
+### 5. Run the Application
+```bash
+python -m streamlit run app.py
+
+```
+---
+
+## 🛡️ Future-Proofing
+This project includes a frozen requirements.txt to ensure stability. If you return to this project after weeks or months, simply run pip install -r requirements.txt to restore the exact working environment.
+
+---
+*Built with ❤️ by Rakesh Raushan

@@ -4,8 +4,8 @@ def main():
     print("🚀 Initializing Hybrid Search Engine...")
     retriever = HybridRetriever()
     
-    # 1. Test Query (Apne PDF se related koi sawal socho)
-    # Example: Agar tumhara PDF "Generative AI" par hai:
+    # 1. Test Query (asking questions related to pdf content)
+    # Example: PDF should be on "Generative AI":
     query = "Explain Generative AI" 
     
     print("\n❓ User Query:", query)
