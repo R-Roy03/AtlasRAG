@@ -1,4 +1,11 @@
 # 🌍 AtlasRAG Platform
+
+![Python](https://img.shields.io/badge/Python-3.10-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![AI](https://img.shields.io/badge/Gen_AI-Gemini_2.5-orange?style=for-the-badge&logo=google&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Frontend-Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
+![LangChain](https://img.shields.io/badge/Framework-LangChain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)
+![ChromaDB](https://img.shields.io/badge/Vector_DB-Chroma-purple?style=for-the-badge)
+
 ### Enterprise-Grade Evaluation & Inference Engine
 
 **AtlasRAG** is not just a chatbot; it is a self-correcting **Knowledge Intelligence System** designed to solve the biggest problem in enterprise GenAI: **Reliability**.
