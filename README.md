@@ -28,6 +28,12 @@ Combines the best of both retrieval worlds for maximum accuracy:
 - **Chat History:** Automatically saves your conversation context.
 - **Export & Clear:** Download your full chat history as JSON or clear it with a single click to start fresh.
 
+## 🏗️ System Architecture
+
+![AtlasRAG Architecture](assets/architecture_diagram.png)
+
+> **Flow:** The system ingests PDFs into a vector store. When a user queries, we perform a **Hybrid Search** (Vector + BM25) to retrieve context. The LLM generates an answer, which is then auditted by an **Evaluation Judge** before being shown to the user.
+
 ---
 
 ## 🛠️ Tech Stack
