@@ -48,6 +48,17 @@ Combines the best of both retrieval worlds for maximum accuracy:
 | **Frontend** | **Streamlit** | Interactive UI with real-time metric dashboards & controls. |
 
 ---
+## 🏆 Competitive Advantage (Why AtlasRAG?)
+
+| Feature | Standard RAG ❌ | AtlasRAG (Your Project) ✅ |
+| :--- | :---: | :---: |
+| **Search Type** | Vector Only (Similarity) | **Hybrid (Vector + Keyword)** |
+| **Accuracy** | Prone to Hallucinations | **High (Self-Correction)** |
+| **Evaluation** | None (Blind Trust) | **LLM-as-a-Judge (Faithfulness Check)** |
+| **Privacy** | Cloud Vector DB | **Local ChromaDB (Privacy First)** |
+| **Cost** | High (OpenAI) | **Optimized (Gemini Flash)** |
+
+---
 
 ## ⚙️ Installation & Setup
 
