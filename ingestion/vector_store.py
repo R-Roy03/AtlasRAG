@@ -1,38 +1,43 @@
+import sys
+import os
+
+# --- 🟢 FIX FOR CHROMA DB ON STREAMLIT CLOUD ---
 try:
     __import__('pysqlite3')
     import sys
     sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 except ImportError:
-    passimport sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain_chroma import Chroma
-from dotenv import load_dotenv
+    pass
+# -----------------------------------------------
 
+from langchain_chroma import Chroma
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_core.documents import Document
+import shutil
+
+# Load environment variables
+from dotenv import load_dotenv
 load_dotenv()
 
-def index_documents(chunks, persist_dir="./chroma_db"):
-    print("💾 Creating Vector Store...")
-    if not chunks: return None
+# Setup Vector Store Path
+PERSIST_DIRECTORY = "./chroma_db"
 
-    api_key = os.getenv("GOOGLE_API_KEY")
-    if not api_key:
-        print("❌ Error: API Key missing in .env")
-        return None
+def index_documents(chunks: list[Document]):
+    """
+    Creates a vector store from document chunks.
+    """
+    if not chunks:
+        return
 
-    # Correct Indentation & Correct Model Name
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+    # Initialize Embeddings
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 
-    try:
-        vector_store = Chroma.from_documents(
-            documents=chunks,
-            embedding=embeddings,
-            persist_directory=persist_dir
-        )
-        print(f"   ✅ Stored {len(chunks)} chunks in ChromaDB at {persist_dir}")
-        return vector_store
-
-    except Exception as e:
-        print(f"❌ Error in Vector Store: {e}")
-        return None
+    # Create Chroma Vector Store
+    vector_store = Chroma.from_documents(
+        documents=chunks,
+        embedding=embeddings,
+        persist_directory=PERSIST_DIRECTORY
+    )
+    
+    print("✅ Documents indexed successfully!")
+    return vector_store

@@ -6,6 +6,10 @@ try:
     sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 except ImportError:
     pass
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+
 import streamlit as st
 import time
 import shutil
