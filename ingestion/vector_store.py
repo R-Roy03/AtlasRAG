@@ -30,7 +30,7 @@ def index_documents(chunks: list[Document]):
         return
 
     # Initialize Embeddings
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 
     # Create Chroma Vector Store
     vector_store = Chroma.from_documents(
