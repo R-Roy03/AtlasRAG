@@ -3,14 +3,14 @@ import os
 import shutil
 import time
 
-# --- 🟢 FIX FOR CHROMA DB ON CLOUD ---
+# --- 🟢 CRITICAL FIX FOR STREAMLIT CLOUD ---
 try:
     __import__('pysqlite3')
     import sys
     sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 except ImportError:
     pass
-# -------------------------------------
+# -------------------------------------------
 
 from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
@@ -32,24 +32,30 @@ def index_documents(chunks: list[Document]):
     if not api_key and hasattr(st, "secrets"):
         api_key = st.secrets.get("GOOGLE_API_KEY")
 
-    # 🛑 DELETE OLD DB (Force Cleanup)
+    # 🟢 STEP 1: Purana Database Udao (Clean Start)
     if os.path.exists(PERSIST_DIRECTORY):
         try:
             shutil.rmtree(PERSIST_DIRECTORY)
-            time.sleep(1)
+            time.sleep(1) # File system ko saans lene do
         except Exception as e:
             print(f"Cleanup Error: {e}")
 
-    # Initialize Embeddings
+    # 🟢 STEP 2: Use Stable Model (Embedding-001)
     embeddings = GoogleGenerativeAIEmbeddings(
-        model="models/text-embedding-004",
+        model="models/embedding-001", # <-- Ye wala kabhi fail nahi hota
         google_api_key=api_key
     )
 
-    # Create New Vector Store
-    vector_store = Chroma.from_documents(
-        documents=chunks,
-        embedding=embeddings,
-        persist_directory=PERSIST_DIRECTORY
-    )
-    return vector_store
+    # 🟢 STEP 3: Naya DB Banao
+    try:
+        vector_store = Chroma.from_documents(
+            documents=chunks,
+            embedding=embeddings,
+            persist_directory=PERSIST_DIRECTORY
+        )
+        return vector_store
+    except Exception as e:
+        # Agar yahan error aaye toh user ko dikhao
+        if "404" in str(e):
+             st.error("❌ API Error: Model not found. Check API Key permissions.")
+        raise e
