@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 # Load Environment Variables
 load_dotenv()
 
-# FIX: Class ka naam wapas 'VectorSearcher' kar diya (taaki error na aaye)
+# FIX: Class ka naam wapas 'VectorSearcher' kar diya (for no error in future)
 class VectorSearcher:
     def __init__(self):
         self.api_key = os.getenv("GOOGLE_API_KEY")
@@ -21,7 +21,7 @@ class VectorSearcher:
             google_api_key=self.api_key
         )
 
-        # 2. Connect to Database (Address batana zaroori hai!)
+        # 2. Connect to Database (compulsery to tell the address!)
         if os.path.exists("./chroma_db"):
             self.vector_store = Chroma(
                 persist_directory="./chroma_db",  

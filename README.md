@@ -110,10 +110,38 @@ GOOGLE_API_KEY="your_actual_api_key_here"
 python -m streamlit run app.py
 
 ```
+## 🚀 Usage Guide
+
+1. **Environment Setup**: Ensure your virtual environment is active: `venv\Scripts\activate`.
+2. **Run App**: Launch the interface using `streamlit run app.py`.
+3. **Ingest Data**: 
+   - Drag and drop your PDFs into the sidebar.
+   - Click **"Update Knowledge Base"** to trigger chunking and embedding.
+4. **Interactive Chat**: Ask questions based on your documents. The system will provide answers along with **Faithfulness** and **Relevance** scores.
+
+## 📂 Project Structure
+- `app.py`: Main Streamlit interface and application logic.
+- `retriever.py`: Logic for Hybrid Search (BM25 + ChromaDB).
+- `evaluator.py`: LLM-as-a-Judge implementation for answer auditing.
+- `assets/`: Contains architecture diagrams and images.
+```
 ---
+
+```
 
 ## 🛡️ Future-Proofing
 This project includes a frozen requirements.txt to ensure stability. If you return to this project after weeks or months, simply run pip install -r requirements.txt to restore the exact working environment.
 
 ---
-*Built with ❤️ by Rakesh Raushan
+
+## 📜 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👤 Author
+
+**Rakesh Raushan**
+---
+*Built with ❤️ by Rakesh Raushan*

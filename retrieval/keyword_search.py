@@ -24,7 +24,7 @@ class KeywordSearcher:
                 embedding_function=self.embeddings
             )
             
-            # Fetch all documents (Limit 100 for speed, badha sakte ho)
+            # Fetch all documents (Limit 100 for speed, can be increased)
             # Note: Production mein hum documents alag store karte hain, 
             # par abhi ke liye vector store se nikal rahe hain.
             try:
