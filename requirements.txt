@@ -8,3 +8,5 @@ chromadb
 pypdf
 rank-bm25
 python-dotenv
+pysqlite3-binary
+pytest
