@@ -119,6 +119,19 @@ python -m streamlit run app.py
    - Click **"Update Knowledge Base"** to trigger chunking and embedding.
 4. **Interactive Chat**: Ask questions based on your documents. The system will provide answers along with **Faithfulness** and **Relevance** scores.
 
+## 📖 Usage Examples
+
+### Sample Scenario: Basic Electrical Engineering
+**User Query:** *"Explain Kirchhoff's Current Law (KCL) with an example."*
+
+**AtlasRAG Output:**
+> "Kirchhoff's Current Law (KCL) states that the algebraic sum of the currents meeting at a junction in an electric circuit is equal to zero.
+> **Example:** In a junction with entering currents I1, I3 and leaving currents I2, I4: I1 + I3 = I2 + I4."
+
+**Evaluation Scores:**
+- ✅ **Faithfulness:** 100% (Grounded in module-1 notes)
+- ✅ **Relevance:** 100% (Directly answers the definition and example request)
+
 ## 📂 Project Structure
 - `app.py`: Main Streamlit interface and application logic.
 - `retriever.py`: Logic for Hybrid Search (BM25 + ChromaDB).
