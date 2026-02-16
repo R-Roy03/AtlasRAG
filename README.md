@@ -132,6 +132,8 @@ python -m streamlit run app.py
 - ✅ **Faithfulness:** 100% (Grounded in module-1 notes)
 - ✅ **Relevance:** 100% (Directly answers the definition and example request)
 
+---
+
 ## 📂 Project Structure
 - `app.py`: Main Streamlit interface and application logic.
 - `retriever.py`: Logic for Hybrid Search (BM25 + ChromaDB).
