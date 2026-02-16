@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # --- 🟢 FIX 2: New Folder Name (Bypasses Read-Only Error) ---
-# Purana 'chroma_db' use nahi karenge, naya banayenge
+# Purana 'chroma_db' use nahi karenge, naya banayenge 'chroma_storage_v2'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PERSIST_DIRECTORY = os.path.join(BASE_DIR, "chroma_storage_v2")
 
