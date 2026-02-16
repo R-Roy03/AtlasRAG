@@ -1,49 +1,44 @@
-from retrieval.vector_search import VectorSearcher
-from retrieval.keyword_search import KeywordSearcher
+from langchain_community.retrievers import BM25Retriever
+from langchain_core.documents import Document
 
 class HybridRetriever:
-    def __init__(self):
-        # FIX: We are not passing arguments
-        # Kyunki VectorSearcher aur KeywordSearcher apne aap path handle kar rahe hain
-        self.vector_searcher = VectorSearcher()
-        self.keyword_searcher = KeywordSearcher()
-    
-    def search(self, query, k=3):
+    def __init__(self, vector_store, chunks):
         """
-        1. Get Vector Results (Semantic)
-        2. Get Keyword Results (Exact Match)
-        3. Combine & Remove Duplicates (Reranking logic simplified)
+        Initialize with the In-Memory Vector Store and Chunks.
         """
-        print(f"🔍 Hybrid Searching for: '{query}'")
+        self.vector_store = vector_store
+        self.chunks = chunks
         
-        # 1. Vector Search
-        vector_docs = self.vector_searcher.search(query, k=k)
-        
-        # 2. Keyword Search
-        keyword_docs = self.keyword_searcher.search(query, k=k)
-        
-        # 3. Combine Results (Simple Set Logic to remove duplicates)
-        # Note: Production mein hum Reranker Model use karte hain
-        combined_results = []
+        # Initialize Retrievers
+        self.vector_retriever = vector_store.as_retriever(search_kwargs={"k": 5})
+        self.bm25_retriever = BM25Retriever.from_documents(chunks)
+        self.bm25_retriever.k = 5
+
+    def search(self, query: str):
+        """
+        Performs Hybrid Search (Vector + BM25) and deduplicates results.
+        """
+        # 1. Get results from both
+        vector_docs = self.vector_retriever.invoke(query)
+        bm25_docs = self.bm25_retriever.invoke(query)
+
+        # 2. Combine and Deduplicate
+        all_docs = []
         seen_content = set()
-
-        # Add Vector Results First (High Priority)
-        for doc in vector_docs:
-            if doc.page_content not in seen_content:
-                combined_results.append(doc)
-                seen_content.add(doc.page_content)
-
-        # Add Keyword Results if unique
-        for doc_content in keyword_docs:
-            if doc_content not in seen_content:
-                # Wrap text in a dummy object to match format
-                class DummyDoc:
-                    def __init__(self, content):
-                        self.page_content = content
-                        self.metadata = {"source": "keyword_search"}
-                
-                combined_results.append(DummyDoc(doc_content))
-                seen_content.add(doc_content)
         
-        print(f"📊 Combining Results: {len(vector_docs)} Vector + {len(keyword_docs)} Keyword")
-        return combined_results
+        # Interleave results (Vector, Keyword, Vector, Keyword...)
+        max_len = max(len(vector_docs), len(bm25_docs))
+        for i in range(max_len):
+            if i < len(vector_docs):
+                doc = vector_docs[i]
+                if doc.page_content not in seen_content:
+                    all_docs.append(doc)
+                    seen_content.add(doc.page_content)
+            
+            if i < len(bm25_docs):
+                doc = bm25_docs[i]
+                if doc.page_content not in seen_content:
+                    all_docs.append(doc)
+                    seen_content.add(doc.page_content)
+        
+        return all_docs[:7] # Return top 7 unique results
