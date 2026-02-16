@@ -28,7 +28,7 @@ st.set_page_config(page_title="AtlasRAG Enterprise", page_icon="🤖", layout="w
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FOLDER = os.path.join(BASE_DIR, "data")
-DB_PATH = os.path.join(BASE_DIR, "chroma_db")
+DB_PATH = os.path.join(BASE_DIR, "chroma_storage_v2")
 
 with st.sidebar:
     st.title("⚙️ Knowledge Base")

@@ -4,32 +4,32 @@ import shutil
 import time
 import streamlit as st
 
-# ---  CRITICAL FIX FOR CHROMA DB ON CLOUD ---
+# --- 🟢 FIX 1: Syntax Error Fixed (Alag lines) ---
 try:
     __import__('pysqlite3')
     import sys
     sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 except ImportError:
     pass
-# ----------------------------------------------
+# -----------------------------------------------
 
 from langchain_chroma import Chroma
-# 🟢 LOCAL EMBEDDINGS (No API Key needed for this part)
 from langchain_huggingface import HuggingFaceEmbeddings 
 from langchain_core.documents import Document
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# Setup Vector Store Path
+# --- 🟢 FIX 2: New Folder Name (Bypasses Read-Only Error) ---
+# Purana 'chroma_db' use nahi karenge, naya banayenge
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PERSIST_DIRECTORY = os.path.join(BASE_DIR, "chroma_db")
+PERSIST_DIRECTORY = os.path.join(BASE_DIR, "chroma_storage_v2")
 
 def index_documents(chunks: list[Document]):
     if not chunks:
         return None
 
-    # 1. Cleanup Old Database (Fresh Start)
+    # 1. Cleanup: Naye folder ko bhi fresh start denge
     if os.path.exists(PERSIST_DIRECTORY):
         try:
             shutil.rmtree(PERSIST_DIRECTORY)
@@ -37,20 +37,19 @@ def index_documents(chunks: list[Document]):
         except Exception as e:
             print(f"Cleanup Warning: {e}")
 
-    # 2. Status Update
+    # 2. Status UI
     status = st.empty()
     status.text("🔄 Initializing Local Embeddings (HuggingFace)...")
     
-    # 3. Initialize Local Embeddings
-    # Model: all-MiniLM-L6-v2 (Industry Standard for RAG)
+    # 3. Initialize Embeddings (Local & Free)
     try:
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     except Exception as e:
         st.error(f"❌ Failed to load local model: {e}")
         raise e
 
-    print(f"💾 Indexing {len(chunks)} chunks...")
-    status.text(f"💾 Creating Index for {len(chunks)} chunks...")
+    print(f"💾 Indexing {len(chunks)} chunks into {PERSIST_DIRECTORY}...")
+    status.text(f"💾 Creating New Index for {len(chunks)} chunks...")
 
     # 4. Create Vector Store
     try:
