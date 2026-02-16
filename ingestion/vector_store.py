@@ -2,16 +2,17 @@ import sys
 import os
 import shutil
 import time
+import tempfile # <--- New Import
 import streamlit as st
 
-# --- 🟢 FIX 1: Syntax Error Fixed (Alag lines) ---
+# --- Syntax Fix ---
 try:
     __import__('pysqlite3')
     import sys
     sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 except ImportError:
     pass
-# -----------------------------------------------
+# ------------------
 
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings 
@@ -20,16 +21,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# --- 🟢 FIX 2: New Folder Name (Bypasses Read-Only Error) ---
-# Purana 'chroma_db' use nahi karenge, naya banayenge 'chroma_storage_v2'
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PERSIST_DIRECTORY = os.path.join(BASE_DIR, "chroma_storage_v2")
+# --- 🟢 NUCLEAR FIX: Use System Temp Directory ---
+# /tmp folder hamesha writable hota hai
+TEMP_DIR = tempfile.gettempdir()
+PERSIST_DIRECTORY = os.path.join(TEMP_DIR, "chroma_db_final")
 
 def index_documents(chunks: list[Document]):
     if not chunks:
         return None
 
-    # 1. Cleanup: Naye folder ko bhi fresh start denge
+    # 1. Cleanup
     if os.path.exists(PERSIST_DIRECTORY):
         try:
             shutil.rmtree(PERSIST_DIRECTORY)
@@ -41,7 +42,7 @@ def index_documents(chunks: list[Document]):
     status = st.empty()
     status.text("🔄 Initializing Local Embeddings (HuggingFace)...")
     
-    # 3. Initialize Embeddings (Local & Free)
+    # 3. Initialize Embeddings
     try:
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     except Exception as e:
@@ -49,7 +50,7 @@ def index_documents(chunks: list[Document]):
         raise e
 
     print(f"💾 Indexing {len(chunks)} chunks into {PERSIST_DIRECTORY}...")
-    status.text(f"💾 Creating New Index for {len(chunks)} chunks...")
+    status.text(f"💾 Creating Index in Temp Storage ({len(chunks)} chunks)...")
 
     # 4. Create Vector Store
     try:
