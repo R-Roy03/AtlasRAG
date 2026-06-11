@@ -17,7 +17,7 @@ def index_documents(chunks: list[Document]):
     try:
         ef = SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
 
-        client = chromadb.Client()  # In-memory ephemeral client
+        client = chromadb.EphemeralClient()  # In-memory, no tenant issues
 
         # Remove old collection if it exists
         try:

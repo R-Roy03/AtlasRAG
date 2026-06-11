@@ -34,7 +34,7 @@ def main():
 
     # 2. Create in-memory vector store
     ef = SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
-    client = chromadb.Client()
+    client = chromadb.EphemeralClient()
 
     try:
         client.delete_collection("atlas_cli")

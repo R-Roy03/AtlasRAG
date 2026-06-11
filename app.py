@@ -906,7 +906,7 @@ st.markdown("""
         &nbsp;·&nbsp;
         <a class="footer-link" href="https://github.com/R-Roy03/AtlasRAG" target="_blank">GitHub</a>
         &nbsp;·&nbsp;
-        Powered by Gemini 2.5 Flash & LangChain
+        Powered by Gemini 2.5 Flash &amp; ChromaDB
     </div>
 </div>
 """, unsafe_allow_html=True)
