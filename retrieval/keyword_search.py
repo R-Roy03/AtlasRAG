@@ -12,7 +12,7 @@ class KeywordSearcher:
 
         # 1. Setup correct embedding model (Same as ingestion)
         self.embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/gemini-embedding-001", 
+            model="models/gemini-embedding-001",
             google_api_key=self.api_key
         )
 
@@ -23,15 +23,15 @@ class KeywordSearcher:
                 persist_directory="./chroma_db",
                 embedding_function=self.embeddings
             )
-            
+
             # Fetch all documents (Limit 100 for speed, can be increased)
-            # Note: Production mein hum documents alag store karte hain, 
+            # Note: Production mein hum documents alag store karte hain,
             # par abhi ke liye vector store se nikal rahe hain.
             try:
                 # Dummy search to get docs (Workaround since Chroma doesn't have 'get_all')
-                results = self.vector_store.similarity_search("dummy", k=50) 
+                results = self.vector_store.similarity_search("dummy", k=50)
                 self.documents = [doc.page_content for doc in results]
-                
+
                 # 3. Create BM25 Index
                 tokenized_corpus = [doc.split(" ") for doc in self.documents]
                 self.bm25 = BM25Okapi(tokenized_corpus)
@@ -46,7 +46,7 @@ class KeywordSearcher:
     def search(self, query, k=3):
         if not self.bm25:
             return []
-        
+
         tokenized_query = query.split(" ")
         # Get top-k text results
         results = self.bm25.get_top_n(tokenized_query, self.documents, n=k)

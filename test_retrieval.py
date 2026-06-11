@@ -9,7 +9,6 @@ try:
 except ImportError:
     pass
 
-import pytest
 
 
 def test_core_retrieval_imports():

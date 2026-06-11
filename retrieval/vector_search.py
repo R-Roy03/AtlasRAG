@@ -17,14 +17,14 @@ class VectorSearcher:
 
         # 1. Embedding Model (Must match Ingestion!)
         self.embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/gemini-embedding-001", 
+            model="models/gemini-embedding-001",
             google_api_key=self.api_key
         )
 
         # 2. Connect to Database (compulsery to tell the address!)
         if os.path.exists("./chroma_db"):
             self.vector_store = Chroma(
-                persist_directory="./chroma_db",  
+                persist_directory="./chroma_db",
                 embedding_function=self.embeddings
             )
         else:
@@ -37,7 +37,7 @@ class VectorSearcher:
         """
         if not self.vector_store:
             return []
-            
+
         try:
             # Similarity Search
             results = self.vector_store.similarity_search(query, k=k)

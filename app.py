@@ -82,8 +82,8 @@ header[data-testid="stHeader"] {
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb { 
-    background: var(--accent-primary); 
+::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
     border-radius: 3px;
 }
 
@@ -620,7 +620,7 @@ with st.sidebar:
         """, unsafe_allow_html=True)
         chunk_count = len(st.session_state.chunks)
         st.markdown(f"""
-        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); 
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
                     padding: 0.3rem 0 0 1rem;">
             {chunk_count} chunks indexed in memory
         </div>
@@ -651,7 +651,7 @@ with st.sidebar:
 
     if uploaded_files:
         st.markdown(f"""
-        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-secondary); 
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-secondary);
                     padding: 0.3rem 0;">
             📎 {len(uploaded_files)} file{'s' if len(uploaded_files) > 1 else ''} selected
         </div>
@@ -767,7 +767,7 @@ if not st.session_state.messages and st.session_state.vector_store is None:
         <div class="empty-state-icon">📄</div>
         <div class="empty-state-title">Upload documents to get started</div>
         <div class="empty-state-desc">
-            Drop your PDF files in the sidebar, click "Update Knowledge Base", 
+            Drop your PDF files in the sidebar, click "Update Knowledge Base",
             then ask questions about your documents.
         </div>
     </div>
@@ -778,7 +778,7 @@ elif not st.session_state.messages and st.session_state.vector_store is not None
         <div class="empty-state-icon">💬</div>
         <div class="empty-state-title">Knowledge Base is ready</div>
         <div class="empty-state-desc">
-            Your documents have been indexed. Ask a question below to start 
+            Your documents have been indexed. Ask a question below to start
             a conversation with your data.
         </div>
     </div>

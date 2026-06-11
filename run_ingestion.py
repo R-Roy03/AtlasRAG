@@ -24,7 +24,7 @@ def main():
         return
 
     docs = load_documents(data_folder)
-    
+
     if not docs:
         print("❌ No Documents found! Add PDFs to 'data' folder.")
         return
@@ -36,7 +36,7 @@ def main():
     # 4. Index & Store
     # Aapke vector_store.py mein function ka naam 'index_documents' hai
     index_documents(chunks)
-    
+
     print("\n✅ Ingestion Complete! Now run 'streamlit run app.py'")
 
 if __name__ == "__main__":
