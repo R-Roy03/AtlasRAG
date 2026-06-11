@@ -6,3 +6,4 @@ rank-bm25
 python-dotenv
 requests
 pysqlite3-binary
+numpy<2.0.0
