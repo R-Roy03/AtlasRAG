@@ -31,7 +31,7 @@ def index_documents(chunks: list[Document]):
         status.text(f"💾 Indexing {len(chunks)} chunks in RAM...")
         print(f"Indexing {len(chunks)} chunks in RAM...")
 
-        # ChromaDB 1.5+ rejects empty metadata dicts — ensure each has at least one key
+        # Ensure each chunk has non-empty metadata (defensive)
         metadatas = []
         for i, chunk in enumerate(chunks):
             meta = dict(chunk.metadata) if chunk.metadata else {}

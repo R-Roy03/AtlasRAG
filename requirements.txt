@@ -1,6 +1,6 @@
 streamlit
 sentence-transformers
-chromadb>=0.5.0
+chromadb==0.4.24
 pypdf
 rank-bm25
 python-dotenv
