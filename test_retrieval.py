@@ -2,22 +2,15 @@
 AtlasRAG — CI-friendly test suite.
 Tests core library imports and module structure without requiring API keys or local files.
 """
-try:
-    __import__('pysqlite3')
-    import sys
-    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-except ImportError:
-    pass
-
 
 
 def test_core_retrieval_imports():
     """Verify all core retrieval libraries are installed and importable."""
     from rank_bm25 import BM25Okapi
-    import chromadb
+    import numpy as np
     from ingestion.loader import Document
     assert BM25Okapi is not None
-    assert chromadb is not None
+    assert np is not None
     assert Document is not None
 
 
@@ -31,8 +24,9 @@ def test_ingestion_modules():
 
 def test_vector_store_module():
     """Verify vector_store module is importable."""
-    from ingestion.vector_store import index_documents
+    from ingestion.vector_store import index_documents, InMemoryVectorStore
     assert callable(index_documents)
+    assert InMemoryVectorStore is not None
 
 
 def test_inference_module():
@@ -82,3 +76,23 @@ def test_document_class():
     doc = Document(page_content="Hello world", metadata={"source": "test.pdf"})
     assert doc.page_content == "Hello world"
     assert doc.metadata["source"] == "test.pdf"
+
+
+def test_in_memory_vector_store():
+    """Verify InMemoryVectorStore can index and query documents."""
+    from sentence_transformers import SentenceTransformer
+    from ingestion.vector_store import InMemoryVectorStore
+
+    model = SentenceTransformer("all-MiniLM-L6-v2")
+    store = InMemoryVectorStore(model)
+
+    store.add(
+        documents=["Python is a programming language", "The sun is a star"],
+        metadatas=[{"source": "a"}, {"source": "b"}],
+        ids=["0", "1"],
+    )
+
+    results = store.query(query_texts=["What is Python?"], n_results=1)
+    assert len(results["documents"]) == 1
+    assert len(results["documents"][0]) == 1
+    assert "Python" in results["documents"][0][0]

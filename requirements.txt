@@ -1,9 +1,7 @@
 streamlit
 sentence-transformers
-chromadb==0.4.24
 pypdf
 rank-bm25
 python-dotenv
 requests
-pysqlite3-binary
 numpy==1.26.4

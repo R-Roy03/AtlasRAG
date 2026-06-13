@@ -2,19 +2,11 @@
 AtlasRAG — CLI Mode (Terminal-based RAG interface).
 Run after ingestion: python run_rag.py
 """
-import sys
-
-try:
-    __import__('pysqlite3')
-    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-except ImportError:
-    pass
-
-import chromadb
-from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
+from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
 from ingestion.loader import load_documents
 from ingestion.chunker import chunk_documents
+from ingestion.vector_store import InMemoryVectorStore
 from retrieval.hybrid_search import HybridRetriever
 from inference.generator import LLMGenerator
 
@@ -24,7 +16,7 @@ load_dotenv()
 def main():
     print("Starting AtlasRAG CLI Mode...")
 
-    # 1. Load documents and create in-memory vector store
+    # 1. Load documents
     docs = load_documents("data")
     chunks = chunk_documents(docs)
 
@@ -32,16 +24,9 @@ def main():
         print("No documents found in 'data/' folder. Add PDFs first.")
         return
 
-    # 2. Create in-memory vector store
-    ef = SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
-    client = chromadb.EphemeralClient()
-
-    try:
-        client.delete_collection("atlas_cli")
-    except Exception:
-        pass
-
-    collection = client.create_collection("atlas_cli", embedding_function=ef)
+    # 2. Create in-memory vector store (pure Python, no chromadb)
+    model = SentenceTransformer("all-MiniLM-L6-v2")
+    store = InMemoryVectorStore(model)
 
     metadatas = []
     for i, chunk in enumerate(chunks):
@@ -50,14 +35,14 @@ def main():
             meta = {"source": "cli", "chunk_index": i}
         metadatas.append(meta)
 
-    collection.add(
+    store.add(
         documents=[chunk.page_content for chunk in chunks],
         metadatas=metadatas,
         ids=[f"chunk_{i}" for i in range(len(chunks))],
     )
 
     # 3. Setup components
-    retriever = HybridRetriever(collection, chunks)
+    retriever = HybridRetriever(store, chunks)
     generator = LLMGenerator()
 
     print("System Ready!\n")

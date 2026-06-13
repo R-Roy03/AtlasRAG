@@ -6,14 +6,6 @@ import json
 import tempfile
 import shutil
 
-# --- PYSQLITE3 FIX (for Streamlit Cloud) ---
-try:
-    __import__('pysqlite3')
-    import sys
-    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-except ImportError:
-    pass
-
 # Add current directory to path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -906,7 +898,7 @@ st.markdown("""
         &nbsp;·&nbsp;
         <a class="footer-link" href="https://github.com/R-Roy03/AtlasRAG" target="_blank">GitHub</a>
         &nbsp;·&nbsp;
-        Powered by Gemini 2.5 Flash &amp; ChromaDB
+        Powered by Gemini 2.5 Flash &amp; Sentence-Transformers
     </div>
 </div>
 """, unsafe_allow_html=True)
