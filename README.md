@@ -31,9 +31,9 @@ Most RAG systems **blindly trust** their LLM output. AtlasRAG doesn't.
 | **Search Type** | Vector Only | **Hybrid (Vector + BM25 Keyword)** |
 | **Accuracy** | Prone to Hallucinations | **Self-Correcting with Evaluation Scores** |
 | **Evaluation** | None (Blind Trust) | **LLM-as-a-Judge (Real-Time Audit)** |
-| **Privacy** | Cloud Vector DB | **Local ChromaDB (Data Never Leaves)** |
+| **Privacy** | Cloud Vector DB | **In-Memory Vector Store (Data Never Leaves)** |
 | **Cost** | High (OpenAI GPT-4) | **Optimized (Gemini 2.5 Flash)** |
-| **Dependencies** | Heavy SDK chains | **Lightweight Direct APIs** |
+| **Dependencies** | Heavy SDK chains (LangChain, ChromaDB, gRPC) | **Lightweight Direct APIs (zero framework overhead)** |
 
 ---
 
@@ -78,8 +78,8 @@ Combines the best of both retrieval paradigms for maximum accuracy:
 | :--- | :--- | :--- |
 | **LLM (Inference)** | Gemini 2.5 Flash | Latest high-speed model for reasoning & generation |
 | **LLM (Judge)** | Gemini 2.5 Flash | Same high-tier model used for unbiased self-evaluation |
-| **Embeddings** | all-MiniLM-L6-v2 | Fast, lightweight sentence embeddings |
-| **Vector Store** | ChromaDB | Local, privacy-focused vector database |
+| **Embeddings** | Sentence-Transformers (all-MiniLM-L6-v2) | Fast, lightweight, local — no API quota needed |
+| **Vector Store** | Custom In-Memory (NumPy) | Pure-Python cosine similarity — zero dependency crashes |
 | **Search Algorithm** | BM25 + Vector | Hybrid retrieval for maximum recall |
 | **PDF Parsing** | pypdf | Robust PDF text extraction |
 | **Frontend** | Streamlit | Interactive UI with real-time metric dashboards |
@@ -169,12 +169,10 @@ AtlasRAG/
 ├── ingestion/                    # Document processing pipeline
 │   ├── loader.py                 #   PDF loader (pypdf) + Document class
 │   ├── chunker.py                #   Recursive text splitter
-│   └── vector_store.py           #   ChromaDB in-memory indexer
+│   └── vector_store.py           #   Pure-Python vector store (NumPy + Sentence-Transformers)
 │
 ├── retrieval/                    # Search & retrieval engines
-│   ├── hybrid_search.py          #   Hybrid Vector + BM25 retriever
-│   ├── vector_search.py          #   Standalone vector search
-│   └── keyword_search.py         #   Standalone BM25 keyword search
+│   └── hybrid_search.py          #   Hybrid Vector + BM25 retriever
 │
 ├── inference/                    # LLM generation
 │   └── generator.py              #   Gemini 2.5 Flash (REST API)

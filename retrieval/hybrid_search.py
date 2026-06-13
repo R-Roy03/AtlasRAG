@@ -5,10 +5,10 @@ from ingestion.loader import Document
 class HybridRetriever:
     def __init__(self, collection, chunks):
         """
-        Initialize with a ChromaDB Collection and document chunks.
+        Initialize with a vector store (InMemoryVectorStore) and document chunks.
         Uses rank_bm25 directly for keyword search.
         """
-        self.collection = collection  # chromadb Collection object
+        self.collection = collection  # InMemoryVectorStore object
         self.chunks = chunks
 
         # BM25 retriever (direct, no langchain dependency)
@@ -20,7 +20,7 @@ class HybridRetriever:
         """
         Performs Hybrid Search (Vector + BM25) and deduplicates results.
         """
-        # 1. Vector search via ChromaDB
+        # 1. Vector search via InMemoryVectorStore
         results = self.collection.query(query_texts=[query], n_results=5)
         vector_docs = []
         if results and results["documents"]:
