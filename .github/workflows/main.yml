@@ -49,8 +49,8 @@ jobs:
       - name: Streamlit Import Check
         run: python -c "import streamlit; print(f'Streamlit {streamlit.__version__}')"
 
-      - name: ChromaDB Import Check
-        run: python -c "import chromadb; print(f'ChromaDB {chromadb.__version__}')"
+      - name: Sentence-Transformers Import Check
+        run: python -c "from sentence_transformers import SentenceTransformer; print('sentence-transformers OK')"
 
       - name: Run Tests
         run: python -m pytest test_retrieval.py -v
