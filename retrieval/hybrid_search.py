@@ -1,5 +1,19 @@
+import re
+
 from rank_bm25 import BM25Okapi
 from ingestion.loader import Document
+
+
+def tokenize(text: str) -> list[str]:
+    """
+    Lowercase and keep only runs of letters/digits.
+
+    Plain text.split() left punctuation glued to words and was
+    case-sensitive, so "XLOOKUP," never matched a query for "XLOOKUP"
+    and "KUMAR" never matched "kumar". No stemming, no stopwords —
+    normalisation only.
+    """
+    return re.findall(r"[a-z0-9]+", text.lower())
 
 
 class HybridRetriever:
@@ -13,7 +27,7 @@ class HybridRetriever:
 
         # BM25 retriever (direct, no langchain dependency)
         self.corpus = [doc.page_content for doc in chunks]
-        tokenized_corpus = [text.split() for text in self.corpus]
+        tokenized_corpus = [tokenize(text) for text in self.corpus]
         self.bm25 = BM25Okapi(tokenized_corpus)
 
     def search(self, query: str):
@@ -32,7 +46,7 @@ class HybridRetriever:
                 )
 
         # 2. BM25 search
-        tokenized_query = query.split()
+        tokenized_query = tokenize(query)
         bm25_scores = self.bm25.get_scores(tokenized_query)
         top_indices = sorted(
             range(len(bm25_scores)), key=lambda i: bm25_scores[i], reverse=True

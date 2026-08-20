@@ -21,7 +21,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from ingestion.loader import load_documents
 from ingestion.chunker import chunk_documents
 from ingestion.vector_store import index_documents
-from retrieval.hybrid_search import HybridRetriever
+from retrieval.hybrid_search import HybridRetriever, tokenize
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 GROUND_TRUTH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ground_truth.json")
@@ -91,7 +91,7 @@ def retrieve_vector(retriever, query):
 
 
 def retrieve_bm25(retriever, query):
-    scores = retriever.bm25.get_scores(query.split())
+    scores = retriever.bm25.get_scores(tokenize(query))
     ranked = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)
     return [retriever.corpus[i] for i in ranked[:MAX_K] if scores[i] > 0]
 
