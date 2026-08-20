@@ -65,22 +65,27 @@ class InMemoryVectorStore:
         return {"documents": all_docs, "metadatas": all_metas}
 
 
-def index_documents(chunks: list[Document]):
+def index_documents(chunks: list[Document], show_ui: bool = True):
     """
     Creates an In-Memory Vector Store using sentence-transformers + numpy.
     Returns an InMemoryVectorStore with the same query() interface as chromadb.
+
+    show_ui=False skips all Streamlit writes so this can run headless
+    (e.g. from the retrieval eval harness).
     """
     if not chunks:
         return None
 
-    status = st.empty()
-    status.text("Initializing In-Memory Embeddings...")
+    status = st.empty() if show_ui else None
+    if status:
+        status.text("Initializing In-Memory Embeddings...")
 
     try:
         model = SentenceTransformer("all-MiniLM-L6-v2")
         store = InMemoryVectorStore(model)
 
-        status.text("Building vector index...")
+        if status:
+            status.text("Building vector index...")
 
         # Ensure each chunk has non-empty metadata (defensive)
         metadatas = []
@@ -90,7 +95,8 @@ def index_documents(chunks: list[Document]):
                 meta = {"source": "uploaded", "chunk_index": i}
             metadatas.append(meta)
 
-        status.text(f"Indexing {len(chunks)} chunks in RAM...")
+        if status:
+            status.text(f"Indexing {len(chunks)} chunks in RAM...")
         print(f"Indexing {len(chunks)} chunks in RAM...")
 
         store.add(
@@ -99,13 +105,15 @@ def index_documents(chunks: list[Document]):
             ids=[f"chunk_{i}" for i in range(len(chunks))],
         )
 
-        status.text(f"{len(chunks)} chunks indexed successfully!")
+        if status:
+            status.text(f"{len(chunks)} chunks indexed successfully!")
         print(f"Indexed {len(chunks)} chunks in RAM")
 
         return store
 
     except Exception as e:
-        status.error(f"RAM Indexing Failed: {e}")
+        if status:
+            status.error(f"RAM Indexing Failed: {e}")
         print(f"Vector Store Error: {e}")
         import traceback
         traceback.print_exc()

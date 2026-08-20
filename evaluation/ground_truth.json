@@ -1,0 +1,231 @@
+{
+  "_readme": [
+    "Ground truth for retrieval_eval.py. Written by hand from the real PDFs in data/.",
+    "Each question is anchored to an 'answer_snippet' — a verbatim phrase from the source document.",
+    "At eval time the harness finds every chunk containing that snippet and treats those as the",
+    "relevant set. Anchoring on text rather than hardcoded chunk numbers means the ground truth",
+    "survives re-chunking, and the harness fails loudly if a snippet no longer resolves.",
+    "",
+    "type = 'exact_keyword': the question contains a distinctive literal token (proper noun,",
+    "  number, product name) that appears verbatim in the target chunk. BM25 should do well here.",
+    "type = 'semantic': the question paraphrases the idea with no distinctive literal anchor.",
+    "  Embeddings should do well here.",
+    "",
+    "GA3.pdf is excluded — its pages are images, so text extraction yields near-empty chunks.",
+    "Gen_AI.pdf, Pushkar CV.pdf and abhishek_data_analyst_resume.pdf are excluded because they",
+    "  are CVs containing third-party personal data. No question here contains a personal name,",
+    "  phone number or email address."
+  ],
+  "questions": [
+    {
+      "id": "k01",
+      "type": "exact_keyword",
+      "question": "What is the peak factor value of an alternating quantity?",
+      "answer_snippet": "1.414",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "k02",
+      "type": "exact_keyword",
+      "question": "Which PMS is enterprise grade and expensive to integrate?",
+      "answer_snippet": "Oracle Opera PMS",
+      "source": "AI Services Description for Appointment Setters + Closing.pdf"
+    },
+    {
+      "id": "k03",
+      "type": "exact_keyword",
+      "question": "Is Zenoti a supported appointment software?",
+      "answer_snippet": "Zenoti",
+      "source": "AI Services Description for Appointment Setters + Closing.pdf"
+    },
+    {
+      "id": "k04",
+      "type": "exact_keyword",
+      "question": "What is the form factor of alternating current?",
+      "answer_snippet": "1.11",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "k05",
+      "type": "exact_keyword",
+      "question": "Is Gupshup one of the listed WhatsApp Business API providers?",
+      "answer_snippet": "Gupshup",
+      "source": "AI Services Description for Appointment Setters + Closing.pdf"
+    },
+    {
+      "id": "k06",
+      "type": "exact_keyword",
+      "question": "Does the AI receptionist ensure HIPAA compliance?",
+      "answer_snippet": "HIPAA",
+      "source": "AI Services Description for Appointment Setters + Closing.pdf"
+    },
+    {
+      "id": "k07",
+      "type": "exact_keyword",
+      "question": "What is RAUZ AI's receptionist?",
+      "answer_snippet": "RAUZ AI",
+      "source": "AI Services Description for Appointment Setters + Closing.pdf"
+    },
+    {
+      "id": "k08",
+      "type": "exact_keyword",
+      "question": "Which agency is the caller representing?",
+      "answer_snippet": "Arctic Fox Agency",
+      "source": "Untitled document.pdf"
+    },
+    {
+      "id": "k09",
+      "type": "exact_keyword",
+      "question": "Is Vagaro one of the supported booking platforms?",
+      "answer_snippet": "Vagaro",
+      "source": "AI Services Description for Appointment Setters + Closing.pdf"
+    },
+    {
+      "id": "k10",
+      "type": "exact_keyword",
+      "question": "Who was Georg Ohm?",
+      "answer_snippet": "Georg Ohm",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "k11",
+      "type": "exact_keyword",
+      "question": "Who first described the circuit laws in 1845?",
+      "answer_snippet": "Gustav Kirchhoff",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "k12",
+      "type": "exact_keyword",
+      "question": "What is Thevenin's equivalent circuit used for in the proof?",
+      "answer_snippet": "Thevenin",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "k13",
+      "type": "exact_keyword",
+      "question": "What is Book4Time?",
+      "answer_snippet": "Book4Time",
+      "source": "AI Services Description for Appointment Setters + Closing.pdf"
+    },
+    {
+      "id": "k14",
+      "type": "exact_keyword",
+      "question": "Why does Ohm's law not apply to silicon carbide?",
+      "answer_snippet": "silicon carbide",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "k15",
+      "type": "exact_keyword",
+      "question": "Are Mews and Apaleo supported property management systems?",
+      "answer_snippet": "Apaleo",
+      "source": "AI Services Description for Appointment Setters + Closing.pdf"
+    },
+    {
+      "id": "s01",
+      "type": "semantic",
+      "question": "How much does the company charge for each phone call it handles?",
+      "answer_snippet": "$0.50 per inbound call handled",
+      "source": "AI Services Description for Appointment Setters + Closing.pdf"
+    },
+    {
+      "id": "s02",
+      "type": "semantic",
+      "question": "What happens to total resistance when components are joined end to end?",
+      "answer_snippet": "Total or Equivalent Resistance in a series Circuit is equal to the Sum",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "s03",
+      "type": "semantic",
+      "question": "How does the service reduce staffing expenses for a business?",
+      "answer_snippet": "Cut labor costs",
+      "source": "AI Services Description for Appointment Setters + Closing.pdf"
+    },
+    {
+      "id": "s04",
+      "type": "semantic",
+      "question": "What should I say if a prospect tells me they already work with someone on promotion?",
+      "answer_snippet": "We already have marketing handled",
+      "source": "Untitled document.pdf"
+    },
+    {
+      "id": "s05",
+      "type": "semantic",
+      "question": "How does the system stop clients from forgetting their appointments?",
+      "answer_snippet": "Reduces no-shows with automated reminders via WhatsApp",
+      "source": "AI Services Description for Appointment Setters + Closing.pdf"
+    },
+    {
+      "id": "s06",
+      "type": "semantic",
+      "question": "Under what condition is the greatest power delivered to a load?",
+      "answer_snippet": "maximum power is transferred from a source to a load when the value of load resistance is equal to the value of source resistance",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "s07",
+      "type": "semantic",
+      "question": "How efficient is the circuit when power delivered to the load is at its greatest?",
+      "answer_snippet": "Efficiency = PowerOutput /Power Input",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "s08",
+      "type": "semantic",
+      "question": "Why is an alternating supply better than a direct one for transmitting energy?",
+      "answer_snippet": "Advantages of AC system over DC system",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "s09",
+      "type": "semantic",
+      "question": "What steady direct current produces the same heating effect as a varying one?",
+      "answer_snippet": "produces the same amount of heat produced by the alternating current",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "s10",
+      "type": "semantic",
+      "question": "How should a caller finish the conversation when the other person keeps refusing?",
+      "answer_snippet": "Exit Professionally",
+      "source": "Untitled document.pdf"
+    },
+    {
+      "id": "s11",
+      "type": "semantic",
+      "question": "What is the highest reliability figure quoted for the platform?",
+      "answer_snippet": "99.9% uptime",
+      "source": "AI Services Description for Appointment Setters + Closing.pdf"
+    },
+    {
+      "id": "s12",
+      "type": "semantic",
+      "question": "How is current shared between two components wired side by side?",
+      "answer_snippet": "Current Division in Parallel circuit of Resistors",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "s13",
+      "type": "semantic",
+      "question": "Which rule states that currents meeting at a junction add up to nothing?",
+      "answer_snippet": "The Algebraic sum of the currents meeting at a junction in an electric circuit is equal to zero",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "s14",
+      "type": "semantic",
+      "question": "Why is the mean of a symmetric waveform taken over only half a cycle?",
+      "answer_snippet": "the positive area cancels the negative area",
+      "source": "BEE module 1 notes.pdf"
+    },
+    {
+      "id": "s15",
+      "type": "semantic",
+      "question": "How is voltage produced when a loop of wire turns inside a magnetic field?",
+      "answer_snippet": "the conductors will cut the magnetic flux due to which an emf is induced",
+      "source": "BEE module 1 notes.pdf"
+    }
+  ]
+}
