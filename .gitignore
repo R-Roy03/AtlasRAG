@@ -33,3 +33,8 @@ logs/
 
 # Data (personal files — not tracked)
 data/
+
+# Personal interview/prep notes — never belong in this repo
+docs/CODE_WALKTHROUGH*.md
+docs/*PREP*
+docs/*prep*
