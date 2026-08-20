@@ -2,17 +2,15 @@
 
 # 🌍 AtlasRAG
 
-### Enterprise-Grade RAG with Self-Correcting Intelligence
+### Enterprise-Grade RAG with Real-Time Response Scoring
 
 ![CI](https://github.com/R-Roy03/AtlasRAG/actions/workflows/main.yml/badge.svg)
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![AI](https://img.shields.io/badge/Gen_AI-Gemini_2.5-orange?style=for-the-badge&logo=google&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Frontend-Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
-![ChromaDB](https://img.shields.io/badge/Vector_DB-Chroma-purple?style=for-the-badge)
+![Vector Store](https://img.shields.io/badge/Vector_Store-NumPy_In--Memory-purple?style=for-the-badge&logo=numpy&logoColor=white)
 
-![AtlasRAG Demo](assets/demo.gif)
-
-**AtlasRAG** is not just a chatbot — it's a self-correcting **Knowledge Intelligence System** that solves the biggest problem in enterprise GenAI: **Reliability.**
+**AtlasRAG** is not just a chatbot — it's an evaluation-augmented **Knowledge Intelligence System** that solves the biggest problem in enterprise GenAI: **Reliability.**
 
 Every response is audited in real-time by an internal **LLM-as-a-Judge** evaluation engine that scores for **Faithfulness** (no hallucinations) and **Relevance** (actually useful answers) before it ever reaches the user.
 
@@ -29,7 +27,7 @@ Most RAG systems **blindly trust** their LLM output. AtlasRAG doesn't.
 | Feature | Standard RAG ❌ | AtlasRAG ✅ |
 | :--- | :---: | :---: |
 | **Search Type** | Vector Only | **Hybrid (Vector + BM25 Keyword)** |
-| **Accuracy** | Prone to Hallucinations | **Self-Correcting with Evaluation Scores** |
+| **Accuracy** | Prone to Hallucinations | **Every Answer Scored Before It's Shown** |
 | **Evaluation** | None (Blind Trust) | **LLM-as-a-Judge (Real-Time Audit)** |
 | **Privacy** | Cloud Vector DB | **In-Memory Vector Store (Data Never Leaves)** |
 | **Cost** | High (OpenAI GPT-4) | **Optimized (Gemini 2.5 Flash)** |
@@ -39,14 +37,14 @@ Most RAG systems **blindly trust** their LLM output. AtlasRAG doesn't.
 
 ## 🚀 Key Features
 
-### ⚖️ Self-Correcting Architecture
+### ⚖️ Evaluation-Augmented Architecture
 Every response is mathematically scored before being presented to the user.
 - **Faithfulness Score** — Checks if the answer is grounded *strictly* in the retrieved documents.
 - **Relevance Score** — Verifies if the answer actually addresses the user's query.
 
 ### 🔍 Hybrid Search Engine
 Combines the best of both retrieval paradigms for maximum accuracy:
-- **Vector Search (ChromaDB)** — Semantic understanding and conceptual matching.
+- **Vector Search (NumPy In-Memory Store)** — Semantic understanding and conceptual matching.
 - **Keyword Search (Rank-BM25)** — Exact matching of domain-specific jargon and technical terms.
 
 ### 🧠 Dynamic Knowledge Base
