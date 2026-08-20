@@ -79,8 +79,16 @@ def build_content_index(chunks):
 # same index objects the retriever holds, so the only thing that differs
 # between the three arms is how results are combined.
 
-def retrieve_hybrid(retriever, query):
-    return [d.page_content for d in retriever.search(query)]
+def retrieve_interleave(retriever, query):
+    return [d.page_content for d in retriever.search(query, fusion="interleave")]
+
+
+def retrieve_weighted(retriever, query):
+    return [d.page_content for d in retriever.search(query, fusion="weighted")]
+
+
+def retrieve_rrf(retriever, query):
+    return [d.page_content for d in retriever.search(query, fusion="rrf")]
 
 
 def retrieve_vector(retriever, query):
@@ -99,7 +107,9 @@ def retrieve_bm25(retriever, query):
 MODES = {
     "vector-only": retrieve_vector,
     "bm25-only": retrieve_bm25,
-    "hybrid": retrieve_hybrid,
+    "interleave": retrieve_interleave,
+    "weighted": retrieve_weighted,
+    "rrf": retrieve_rrf,
 }
 
 
@@ -128,22 +138,21 @@ def score(questions, retriever, content_index, mode_fn):
 
 def print_table(title, results, n):
     print(f"\n{title}  (n={n})")
-    print("-" * 62)
-    header = f"{'mode':<14}" + "".join(f"{m:>11}" for m in results["hybrid"])
-    print(header)
-    for mode in ("vector-only", "bm25-only", "hybrid"):
-        row = f"{mode:<14}" + "".join(f"{v:>11.3f}" for v in results[mode].values())
-        print(row)
+    print("-" * 70)
+    metrics = list(results["vector-only"])
+    print(f"{'mode':<22}" + "".join(f"{m:>11}" for m in metrics))
+    for mode in MODES:
+        row = "".join(f"{results[mode][m]:>11.3f}" for m in metrics)
+        print(f"{mode:<22}{row}")
 
-
-def print_delta(results):
-    print(f"{'hybrid vs vector-only':<14}", end="")
-    for metric in results["hybrid"]:
-        base = results["vector-only"][metric]
-        delta = results["hybrid"][metric] - base
-        pct = f"{delta / base * 100:+.1f}%" if base > 0 else "  n/a"
-        print(f"{pct:>11}", end="")
-    print()
+    print("-" * 70)
+    for mode in ("interleave", "weighted", "rrf"):
+        cells = ""
+        for m in metrics:
+            base = results["vector-only"][m]
+            delta = results[mode][m] - base
+            cells += f"{f'{delta / base * 100:+.1f}%' if base > 0 else 'n/a':>11}"
+        print(f"{mode + ' vs vector':<22}{cells}")
 
 
 def main():
@@ -178,13 +187,11 @@ def main():
 
     overall = {m: all_results[m][0] for m in MODES}
     print_table("OVERALL", overall, len(questions))
-    print_delta(overall)
 
     for qtype in ("semantic", "exact_keyword"):
         subset = [q for q in questions if q["type"] == qtype]
         by_type = {m: score(subset, retriever, content_index, MODES[m])[0] for m in MODES}
         print_table(f"{qtype.upper().replace('_', ' ')} QUERIES", by_type, len(subset))
-        print_delta(by_type)
 
     print("\n" + "-" * 62)
     print(f"Caveat: {len(questions)} questions over {len(chunks)} chunks from one")

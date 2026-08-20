@@ -36,11 +36,14 @@ class InMemoryVectorStore:
     def query(self, query_texts, n_results=5):
         """
         Semantic search via cosine similarity.
-        Returns dict with 'documents' and 'metadatas' keys
-        (same format as chromadb Collection.query).
+        Returns dict with 'documents', 'metadatas' and 'scores' keys.
+
+        'scores' are the raw cosine similarities of the returned documents,
+        best first. They were previously computed, used to sort, then thrown
+        away — which meant a caller doing score fusion had nothing to weight.
         """
         if self.embeddings is None or len(self.documents) == 0:
-            return {"documents": [[]], "metadatas": [[]]}
+            return {"documents": [[]], "metadatas": [[]], "scores": [[]]}
 
         # Encode and normalize query
         q_raw = self.model.encode(query_texts, show_progress_bar=False)
@@ -53,6 +56,7 @@ class InMemoryVectorStore:
 
         all_docs = []
         all_metas = []
+        all_scores = []
 
         for col in range(similarities.shape[1]):
             scores = similarities[:, col]
@@ -61,8 +65,9 @@ class InMemoryVectorStore:
 
             all_docs.append([self.documents[i] for i in top_indices])
             all_metas.append([self.metadatas[i] for i in top_indices])
+            all_scores.append([float(scores[i]) for i in top_indices])
 
-        return {"documents": all_docs, "metadatas": all_metas}
+        return {"documents": all_docs, "metadatas": all_metas, "scores": all_scores}
 
 
 def index_documents(chunks: list[Document], show_ui: bool = True):
