@@ -731,7 +731,7 @@ with st.sidebar:
 # ══════════════════════════════════════════════════════
 
 # Hero Header — build typewriter subtitle
-_tw_text = "Self-correcting AI that audits every response for hallucinations and relevance — powered by Hybrid Search and LLM-as-a-Judge evaluation."
+_tw_text = "Evaluation-augmented AI with real-time response scoring — every answer scored for faithfulness and relevance, powered by Hybrid Search and LLM-as-a-Judge."
 _tw_chars = ""
 for _i, _c in enumerate(_tw_text):
     _delay = _i * 0.03
